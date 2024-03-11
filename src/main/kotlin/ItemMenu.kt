@@ -7,7 +7,7 @@ class ItemMenu(player: Player) {
         while (menuBrowse) {
             var itemCount = 1
             for (item in player.inventory) {
-                println("$itemCount. ${item.name}")
+                println("$itemCount. $item")
                 itemCount++
             }
             println("$itemCount. Exit Item Menu")
@@ -16,17 +16,17 @@ class ItemMenu(player: Player) {
             var choice: Int?
             do {
                 choice = readln().toIntOrNull()
-                if (choice == null || choice <= 0 || choice >= player.inventory.size) {
-                    println("Opción no válida, vuelve a intentarlo.")
+                if (choice == null || choice <= 0 || choice > (player.inventory.size + 1)) {
+                    println("Invalid choice, try again.")
                 }
-            } while (choice == null || choice <= 0 || choice >= player.inventory.size)
+            } while (choice == null || choice <= 0 || choice > (player.inventory.size + 1))
 
             if (choice == itemCount) {
                 menuBrowse = false
             }
             else {
                 val chosenItem = player.inventory[choice - 1]
-                val itSelec = false
+                var itSelec = false
 
                 while (!itSelec) {
                     println("What would you like to do with this item?")
@@ -36,15 +36,14 @@ class ItemMenu(player: Player) {
                     do {
                         itChoice = readln().toIntOrNull()
                         if (itChoice == null || itChoice <= 0 || itChoice >= 4) {
-                            println("Opción no válida, vuelve a intentarlo.")
+                            println("Invalid choice, try again.")
                         }
                     } while (itChoice == null || itChoice <= 0 || itChoice >= 4)
 
                     when (itChoice) {
 
                         1 -> {
-                            if (chosenItem.type == "EneItem") {
-
+                            if (chosenItem is Scanner) {
 
                                 println("On which enemy do you want to use it?")
                                 var enemyCount = 1
@@ -63,19 +62,33 @@ class ItemMenu(player: Player) {
 
                                 val chosenEnemy = enemies[eneChoice - 1]
 
-
+                                chosenItem.effect(chosenEnemy)
+                                player.inventory.remove(chosenItem)
                             }
+                            if (chosenItem is Bomb) {
+                                chosenItem.effect(enemies)
+                                player.inventory.remove(chosenItem)
+                            }
+                            if (chosenItem is Potion) {
+                                chosenItem.effect(player)
+                                player.inventory.remove(chosenItem)
+                            }
+
+                            itSelec = true
+                            menuBrowse = false
                         }
 
+                        2 ->  {
+                            chosenItem.desc()
+                        }
+
+                        3 -> {
+                            itSelec = true
+                            menuBrowse = false
+                        }
                     }
                 }
             }
         }
-    }
-}
-
-class ItemGestion<T>(private val type: T) {
-    fun use(item: EneItem, enemy: Enemy) {
-        item.effect(enemy)
     }
 }

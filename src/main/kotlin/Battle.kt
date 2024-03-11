@@ -4,11 +4,18 @@ class Battle(player: Player, fieldEnemies: List<Any>) {
         const val CHANCE_OF_ESCAPE = 75
     }
 
-    fun startBattle(player: Player, fieldEnemies: List<Enemy>) {
+    fun startBattle(player: Player, fieldEnemies: List<Enemy>): Boolean {
 
         val enemyList = fieldEnemies.toMutableList()
 
-        var battleState = true
+        val itemMenu = ItemMenu(player)
+
+        var moneyReward = 0
+        for (enemy in fieldEnemies) {
+            moneyReward += enemy.moneyDrop
+        }
+
+        val battleState = true
         println("THE BATTLE BEGINS!")
 
         while (battleState) {
@@ -16,7 +23,10 @@ class Battle(player: Player, fieldEnemies: List<Any>) {
             if (enemyList.isEmpty()) {
                 println("VICTORY!")
                 Thread.sleep(100)
-                battleState = false
+                player.money += moneyReward
+                println("You got $moneyReward coins!")
+                Thread.sleep(100)
+                return true
             }
 
             player.defStatus = false
@@ -36,7 +46,7 @@ class Battle(player: Player, fieldEnemies: List<Any>) {
             do {
                 choice = readln().toIntOrNull()
                 if (choice == null || choice <= 0 || choice >= 5) {
-                    println("Opción no válida, vuelve a intentarlo.")
+                    println("Invalid option, try again.")
                 }
             } while (choice == null || choice <= 0 || choice >= 5)
 
@@ -52,7 +62,7 @@ class Battle(player: Player, fieldEnemies: List<Any>) {
                         do {
                             eneChoice = readln().toIntOrNull()
                             if (eneChoice == null || eneChoice <= 0 || eneChoice > enemyList.size) {
-                                println("Opción no válida, vuelve a intentarlo.")
+                                println("Invalid option, try again.")
                             }
                         } while (eneChoice == null || eneChoice <= 0 || eneChoice > enemyList.size)
 
@@ -71,14 +81,14 @@ class Battle(player: Player, fieldEnemies: List<Any>) {
                 }
 
                 3 -> {
-
+                    itemMenu.itemMenu(player, enemyList)
                 }
 
                 4 -> {
                     val result = randPercentage(CHANCE_OF_ESCAPE)
                     if (result) {
                         println("Got away safely!")
-                        battleState = false
+                        return true
                     }
                     else {
                         println("You couldn't escape!")
@@ -90,14 +100,16 @@ class Battle(player: Player, fieldEnemies: List<Any>) {
             Thread.sleep(100)
 
             if (enemyList.isNotEmpty()) {
-                for (enemy in enemyList) {
-                    if (enemy.hp <= 0) {
-                        enemy.defeat()
-                        enemyList.remove(enemy)
+                var i = 0
+                while (i <= enemyList.size) {
+                    if (enemyList[i].hp <= 0) {
+                        enemyList[i].defeat()
+                        enemyList.remove(enemyList[i])
                     }
                     if (enemyList.isEmpty()) {
                         break
                     }
+                    i++
                 }
             }
 
@@ -105,7 +117,11 @@ class Battle(player: Player, fieldEnemies: List<Any>) {
 
             if (enemyList.isEmpty()) {
                 println("VICTORY!")
-                battleState = false
+                Thread.sleep(100)
+                player.money += moneyReward
+                println("You got $moneyReward coins!")
+                Thread.sleep(100)
+                return true
             }
 
             Thread.sleep(100)
@@ -118,10 +134,11 @@ class Battle(player: Player, fieldEnemies: List<Any>) {
 
             if (player.hp <= 0) {
                 println("YOU WERE SLAIN!")
-                battleState = false
+                Thread.sleep(100)
+                return false
             }
 
         }
+        return true
     }
-
 }

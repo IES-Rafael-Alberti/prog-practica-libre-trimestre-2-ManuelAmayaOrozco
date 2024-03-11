@@ -4,7 +4,9 @@ interface Enemy {
     fun scan()
     fun defeat()
     fun action(player: Player)
+    val weakness: Element
     var hp: Int
+    val moneyDrop: Int
 }
 
 class Slime: Enemy {
@@ -14,7 +16,15 @@ class Slime: Enemy {
         const val CHANCE_OF_ATTACK = 70
     }
 
+    override val weakness = Element.FIRE
+
+    override val moneyDrop = (1..10).random()
+
     override var hp = BASE_HP
+
+    override fun toString(): String {
+        return "Slime"
+    }
 
     override fun attack(player: Player) {
         val damage = (1..BASE_ATK).random()
@@ -66,7 +76,15 @@ class Goblin: Enemy {
         const val CHANCE_OF_BACKSTAB = 35
     }
 
+    override val weakness = Element.FIRE
+
+    override val moneyDrop = (5..20).random()
+
     override var hp = BASE_HP
+
+    override fun toString(): String {
+        return "Goblin"
+    }
 
     override fun attack(player: Player) {
         val damage = (1..BASE_ATK).random()
@@ -118,7 +136,7 @@ class Goblin: Enemy {
                 backstab(player)
             }
             else {
-                println("The goblin takes a stab!")
+                println("The goblin takes a swing at you!")
                 attack(player)
             }
         }
@@ -137,7 +155,15 @@ class Ogre: Enemy {
         const val CHANCE_OF_HEAVY_SLAM = 10
     }
 
+    override val weakness = Element.FIRE
+
+    override val moneyDrop = (20..50).random()
+
     override var hp = BASE_HP
+
+    override fun toString(): String {
+        return "Ogre"
+    }
 
     override fun attack(player: Player) {
         val damage = (1..BASE_ATK).random()
