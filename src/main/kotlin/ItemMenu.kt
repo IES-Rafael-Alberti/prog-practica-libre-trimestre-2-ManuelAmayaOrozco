@@ -56,7 +56,7 @@ class ItemMenu(player: Player) {
                                 do {
                                     eneChoice = readln().toIntOrNull()
                                     if (eneChoice == null ||eneChoice <= 0 || eneChoice >= enemies.size) {
-                                        println("Opción no válida, vuelve a intentarlo.")
+                                        println("Invalid option, try again.")
                                     }
                                 } while (eneChoice == null || eneChoice <= 0 || eneChoice >= enemies.size)
 
@@ -71,6 +71,27 @@ class ItemMenu(player: Player) {
                             }
                             if (chosenItem is Potion) {
                                 chosenItem.effect(player)
+                                player.inventory.remove(chosenItem)
+                            }
+                            if (chosenItem is TomeOfPower) {
+                                println("On which enemy do you want to use it?")
+                                var enemyCount = 1
+                                for (enemy in enemies) {
+                                    println("$enemyCount. " + enemy.desc())
+                                    enemyCount++
+                                }
+
+                                var eneChoice: Int?
+                                do {
+                                    eneChoice = readln().toIntOrNull()
+                                    if (eneChoice == null ||eneChoice <= 0 || eneChoice >= enemies.size) {
+                                        println("Invalid option, try again.")
+                                    }
+                                } while (eneChoice == null || eneChoice <= 0 || eneChoice >= enemies.size)
+
+                                val chosenEnemy = enemies[eneChoice - 1]
+
+                                chosenItem.effect(chosenEnemy)
                                 player.inventory.remove(chosenItem)
                             }
 

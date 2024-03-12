@@ -9,6 +9,8 @@ class Player(val name: String) {
 
     private var weaponAtk = 0
 
+    var status = Ailment.NONE
+
     var defStatus = true
 
     var maxHP = BASE_HP
@@ -19,17 +21,28 @@ class Player(val name: String) {
 
     var element = Element.NONE
 
+    val chance_of_ailment_relief = 10
+
+    val turns_of_sleep = 3
+
     var money = STARTING_MONEY
 
     fun attack(enemy: Enemy) {
-        val atkRes = ((atk/4)..atk).random()
-        if (element == enemy.weakness) {
-            enemy.hp -= (atkRes * 2)
+        if (enemy.type == EnemyType.UNDEAD) {
+            if (element == Element.NONE) {
+                println("The attack phases through the $enemy")
+            }
         }
         else {
-            enemy.hp -= atkRes
+            val atkRes = ((atk/4)..atk).random()
+            if (element == enemy.weakness) {
+                enemy.hp -= (atkRes * 2)
+            }
+            else {
+                enemy.hp -= atkRes
+            }
+            println("Dealt $atkRes damage to $enemy!")
         }
-        println("Dealt $atkRes damage to $enemy!")
     }
 
     fun defend() {

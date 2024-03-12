@@ -56,22 +56,52 @@ class Battle(player: Player, fieldEnemies: List<Any>) {
 
                 1 -> {
                     if (enemyList.size > 1) {
-                        println("Which enemy will you attack?")
+                            println("Which enemy will you attack?")
 
-                        var eneChoice: Int?
-                        do {
-                            eneChoice = readln().toIntOrNull()
-                            if (eneChoice == null || eneChoice <= 0 || eneChoice > enemyList.size) {
-                                println("Invalid option, try again.")
+                            var eneChoice: Int?
+                            do {
+                                eneChoice = readln().toIntOrNull()
+                                if (eneChoice == null || eneChoice <= 0 || eneChoice > enemyList.size) {
+                                    println("Invalid option, try again.")
+                                }
+                            } while (eneChoice == null || eneChoice <= 0 || eneChoice > enemyList.size)
+
+                            if (player.status == Ailment.PARALYSIS) {
+                                val relief = randPercentage(player.chance_of_ailment_relief)
+                                if (relief) {
+                                    println("You were cured of your paralysis!")
+                                    Thread.sleep(100)
+                                    println("${player.name} attacks!")
+                                    player.attack(enemyList[eneChoice - 1])
+                                }
+                                else {
+                                    println("The paralysis doesn't allow you to move!")
+                                    Thread.sleep(100)
+                                }
                             }
-                        } while (eneChoice == null || eneChoice <= 0 || eneChoice > enemyList.size)
-
-                        println("${player.name} attacks!")
-                        player.attack(enemyList[eneChoice - 1])
+                            else {
+                                println("${player.name} attacks!")
+                                player.attack(enemyList[eneChoice - 1])
+                            }
                     }
                     else {
-                        println("${player.name} attacks!")
-                        player.attack(enemyList[0])
+                        if (player.status == Ailment.PARALYSIS) {
+                            val relief = randPercentage(player.chance_of_ailment_relief)
+                            if (relief) {
+                                println("You were cured of your paralysis!")
+                                Thread.sleep(100)
+                                println("${player.name} attacks!")
+                                player.attack(enemyList[0])
+                            }
+                            else {
+                                println("The paralysis doesn't allow you to move!")
+                                Thread.sleep(100)
+                            }
+                        }
+                        else {
+                            println("${player.name} attacks!")
+                            player.attack(enemyList[0])
+                        }
                     }
                 }
 
