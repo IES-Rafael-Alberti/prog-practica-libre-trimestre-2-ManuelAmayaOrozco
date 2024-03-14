@@ -19,11 +19,11 @@ class Player(val name: String) {
 
     private var atk = BASE_ATK + weaponAtk
 
-    var element = Element.NONE
+    private var element = Element.NONE
 
-    val chance_of_ailment_relief = 10
+    val chanceOfAilmentRelief = 10
 
-    val turns_of_sleep = 3
+    val turnsOfSleep = 3
 
     var money = STARTING_MONEY
 
@@ -31,6 +31,7 @@ class Player(val name: String) {
         if (enemy.type == EnemyType.UNDEAD) {
             if (element == Element.NONE) {
                 println("The attack phases through the $enemy")
+                Thread.sleep(100)
             }
         }
         else {
@@ -42,10 +43,23 @@ class Player(val name: String) {
                 enemy.hp -= atkRes
             }
             println("Dealt $atkRes damage to $enemy!")
+            Thread.sleep(100)
         }
     }
 
     fun defend() {
         defStatus = true
+    }
+
+    fun getMoney(rewardMoney: Int) {
+        println("Obtained $rewardMoney coins!")
+        Thread.sleep(100)
+        money += rewardMoney
+    }
+
+    fun getItem(item: Item) {
+        println("You received $item")
+        Thread.sleep(100)
+        inventory.add(item)
     }
 }

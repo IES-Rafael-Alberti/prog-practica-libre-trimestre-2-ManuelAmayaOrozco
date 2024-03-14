@@ -1,4 +1,5 @@
 enum class EnemyType {
     NORMAL,
-    UNDEAD
+    UNDEAD,
+    BOSS
 }

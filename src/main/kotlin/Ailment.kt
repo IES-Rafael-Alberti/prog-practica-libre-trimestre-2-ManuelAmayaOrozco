@@ -1,5 +1,6 @@
 enum class Ailment {
     NONE,
     POISON,
-    PARALYSIS
+    PARALYSIS,
+    SLEEP
 }

@@ -1,4 +1,4 @@
-class Battle(player: Player, fieldEnemies: List<Any>) {
+class Battle() {
 
     companion object {
         const val CHANCE_OF_ESCAPE = 75
@@ -18,6 +18,8 @@ class Battle(player: Player, fieldEnemies: List<Any>) {
         val battleState = true
         println("THE BATTLE BEGINS!")
 
+        var sleepTurn = 0
+
         while (battleState) {
 
             if (enemyList.isEmpty()) {
@@ -31,31 +33,44 @@ class Battle(player: Player, fieldEnemies: List<Any>) {
 
             player.defStatus = false
 
-            var enemyCount = 1
-            for (enemy in enemyList) {
-                println("$enemyCount. " + enemy.desc())
-                enemyCount++
+            if (player.status == Ailment.SLEEP) {
+                println("You're fast asleep!")
+                Thread.sleep(100)
+                sleepTurn++
             }
 
-            println("What will you do?")
-            println("HP ${player.hp}/${player.maxHP}")
-            println("1. ATTACK      2. DEFEND")
-            println("3. ITEM        4. RUN")
+            if (sleepTurn == player.turnsOfSleep) {
+                println("You wake up!")
+                Thread.sleep(100)
+                sleepTurn = 0
+            }
 
-            var choice: Int?
-            do {
-                choice = readln().toIntOrNull()
-                if (choice == null || choice <= 0 || choice >= 5) {
-                    println("Invalid option, try again.")
+            if (player.status != Ailment.SLEEP) {
+                var enemyCount = 1
+                for (enemy in enemyList) {
+                    println("$enemyCount. " + enemy.desc())
+                    enemyCount++
                 }
-            } while (choice == null || choice <= 0 || choice >= 5)
 
-            Thread.sleep(100)
+                println("What will you do?")
+                println("HP ${player.hp}/${player.maxHP}")
+                println("1. ATTACK      2. DEFEND")
+                println("3. ITEM        4. RUN")
 
-            when (choice) {
+                var choice: Int?
+                do {
+                    choice = readln().toIntOrNull()
+                    if (choice == null || choice <= 0 || choice >= 5) {
+                        println("Invalid option, try again.")
+                    }
+                } while (choice == null || choice <= 0 || choice >= 5)
 
-                1 -> {
-                    if (enemyList.size > 1) {
+                Thread.sleep(100)
+
+                when (choice) {
+
+                    1 -> {
+                        if (enemyList.size > 1) {
                             println("Which enemy will you attack?")
 
                             var eneChoice: Int?
@@ -67,7 +82,7 @@ class Battle(player: Player, fieldEnemies: List<Any>) {
                             } while (eneChoice == null || eneChoice <= 0 || eneChoice > enemyList.size)
 
                             if (player.status == Ailment.PARALYSIS) {
-                                val relief = randPercentage(player.chance_of_ailment_relief)
+                                val relief = randPercentage(player.chanceOfAilmentRelief)
                                 if (relief) {
                                     println("You were cured of your paralysis!")
                                     Thread.sleep(100)
@@ -83,49 +98,63 @@ class Battle(player: Player, fieldEnemies: List<Any>) {
                                 println("${player.name} attacks!")
                                 player.attack(enemyList[eneChoice - 1])
                             }
-                    }
-                    else {
-                        if (player.status == Ailment.PARALYSIS) {
-                            val relief = randPercentage(player.chance_of_ailment_relief)
-                            if (relief) {
-                                println("You were cured of your paralysis!")
-                                Thread.sleep(100)
+                        }
+                        else {
+                            if (player.status == Ailment.PARALYSIS) {
+                                val relief = randPercentage(player.chanceOfAilmentRelief)
+                                if (relief) {
+                                    println("You were cured of your paralysis!")
+                                    Thread.sleep(100)
+                                    println("${player.name} attacks!")
+                                    player.attack(enemyList[0])
+                                }
+                                else {
+                                    println("The paralysis doesn't allow you to move!")
+                                    Thread.sleep(100)
+                                }
+                            }
+                            else {
                                 println("${player.name} attacks!")
                                 player.attack(enemyList[0])
                             }
-                            else {
-                                println("The paralysis doesn't allow you to move!")
-                                Thread.sleep(100)
+                        }
+                    }
+
+                    2 -> {
+                        println("${player.name} brazed for impact!")
+                        player.defend()
+                    }
+
+                    3 -> {
+                        itemMenu.itemMenu(player, enemyList)
+                    }
+
+                    4 -> {
+                        var containsBoss = false
+                        for (enemy in enemyList) {
+                            if (enemy.type == EnemyType.BOSS) {
+                                containsBoss = true
                             }
                         }
+
+                        if (containsBoss) {
+                            println("Unable to escape such a powerful foe!")
+                        }
                         else {
-                            println("${player.name} attacks!")
-                            player.attack(enemyList[0])
+                            val result = randPercentage(CHANCE_OF_ESCAPE)
+                            if (result) {
+                                println("Got away safely!")
+                                return true
+                            }
+                            else {
+                                println("You couldn't escape!")
+                            }
                         }
                     }
-                }
 
-                2 -> {
-                    println("${player.name} brazed for impact!")
-                    player.defend()
                 }
-
-                3 -> {
-                    itemMenu.itemMenu(player, enemyList)
-                }
-
-                4 -> {
-                    val result = randPercentage(CHANCE_OF_ESCAPE)
-                    if (result) {
-                        println("Got away safely!")
-                        return true
-                    }
-                    else {
-                        println("You couldn't escape!")
-                    }
-                }
-
             }
+
 
             Thread.sleep(100)
 

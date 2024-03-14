@@ -467,3 +467,109 @@ class Ghost: Enemy {
         }
     }
 }
+
+//BOSSES
+
+class Siren: Enemy {
+    companion object {
+        const val BASE_HP = 50
+        const val BASE_ATK = 7
+        const val SCREECH_DAMAGE = 10
+        const val CHANCE_OF_ATTACK = 80
+        const val CHANCE_OF_SCREECH = 40
+        const val CHANCE_OF_SONG = 50
+        const val INFLICT_SLEEP = 35
+    }
+
+    override val type = EnemyType.BOSS
+
+    override val weakness = Element.ELECTRIC
+
+    override val moneyDrop = (50..85).random()
+
+    override var hp = BASE_HP
+
+    override fun toString(): String {
+        return "Siren"
+    }
+
+    override fun attack(player: Player) {
+        val damage = (1..BASE_ATK).random()
+        if (player.defStatus) {
+            player.hp -= (damage / 2)
+            println("Took ${damage / 2} damage!")
+        }
+        else {
+            player.hp -= damage
+            println("Took $damage damage!")
+        }
+    }
+
+    private fun screech(player: Player) {
+        val damage = (3..SCREECH_DAMAGE).random()
+        if (player.defStatus) {
+            player.hp -= (damage / 2)
+            println("Took ${damage / 2} damage!")
+        }
+        else {
+            player.hp -= damage
+            println("Took $damage damage!")
+        }
+    }
+
+    private fun sing(player: Player) {
+        val ailment = randPercentage(INFLICT_SLEEP)
+        if (player.defStatus) {
+            println("You covered your ears just in time!")
+        }
+        else {
+            println("You managed to avoid falling asleep!")
+            if (ailment) {
+                player.status = Ailment.SLEEP
+                println("You fell asleep!")
+            }
+        }
+    }
+
+    override fun desc(): String {
+        return "Siren -> HP $hp/$BASE_HP"
+    }
+
+    override fun scan() {
+        println("\n__SIREN__")
+        Thread.sleep(50)
+        println("A powerful songstress that disguises as a woman to lure in adventurers, very dangerous.")
+        Thread.sleep(50)
+        println("WEAKNESS: ELECTRIC.\n")
+        Thread.sleep(100)
+    }
+
+    override fun defeat() {
+        println("Siren was defeated!")
+    }
+
+    override fun action(player: Player) {
+        val result1 = randPercentage(CHANCE_OF_ATTACK)
+        if (result1) {
+            val result2 = randPercentage(CHANCE_OF_SCREECH)
+            if (result2) {
+                val result3 = randPercentage(CHANCE_OF_SONG)
+                if (result3) {
+                    println("The siren sings a soothing lullaby!")
+                    sing(player)
+                }
+                else {
+                    println("The siren screeches loudly at you!")
+                    screech(player)
+                }
+            }
+            else {
+                println("The siren bites at you!")
+                attack(player)
+            }
+        }
+        else {
+            println("The siren licks her mouth menacingly.")
+        }
+    }
+}
