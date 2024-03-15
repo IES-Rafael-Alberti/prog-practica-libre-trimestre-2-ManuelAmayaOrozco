@@ -67,28 +67,49 @@ Este conjunto de preguntas está diseñado para ayudarte a reflexionar sobre có
 #### **Criterio global 1: Instancia objetos y hacer uso de ellos**
 - **(2.a, 2.b, 2.c, 2.d, 2.f, 2.h, 4.f, 4.a)**: Describe cómo has instanciado y utilizado objetos en tu proyecto. ¿Cómo has aplicado los constructores y pasado parámetros a los métodos? Proporciona ejemplos específicos de tu código.
 
+  He creado diversos objetos, la mayoría sin necesidad de pasar parámetros para su construcción ya que tienen datos predeterminados, he pasado parámetros mayormente a funciones, ya que no me ha hecho falta crear instancias especificas
+  de los diferentes tipos de objetos.
+
 #### **Criterio global 2: Crear y llamar métodos estáticos**
 - **(4.i)**: ¿Has definido algún método/propiedad estático en tu proyecto? ¿Cuál era el objetivo y por qué consideraste que debía ser estático en lugar de un método/propiedad de instancia?
 - **(2.e)**: ¿En qué parte del código se llama a un método estático o se utiliza la propiedad estática?
 
+  He definido algunos métodos estáticos, usando companion objects para crear constantes compartidas entre los objetos y alguna que otra función común (especialmente para datos).
+
 #### **Criterio global 3: Uso de entornos**
 - **(2.i)**: ¿Cómo utilizaste el IDE para el desarrollo de tu proyecto? Describe el proceso de creación, compilación, y prueba de tu programa.
+
+  IDE me ha ayudado bastante al hacerme saber los diferentes tipos de errores en mi programa, la creación fue bastante complicada, sobretodo en cuanto a los objetos de la aventura, pero las pruebas mostraron que
+  el resultado fue exitoso.
 
 #### **Criterio global 4: Definir clases y su contenido**
 - **(4.b, 4.c, 4.d, 4.g)**: Explica sobre un ejemplo de tu código, cómo definiste las clases en tu proyecto, es decir como identificaste las de propiedades, métodos y constructores y modificadores del control de acceso a métodos y propiedades, para representar al objeto del mundo real. ¿Cómo contribuyen estas clases a la solución del problema que tu aplicación aborda?
 
+  He usado diferentes objetos en la creación del programa para representar cosas como al jugador, enemigos, eventos de la aventura y la aventura en sí. Por ejemplo, para los enemigos, la mayoría de sus funciones están privadas y no se pueden acceder por fuera ya que
+  serán elegidas a través de su función de acción que elige entre sus tipos de ataques.
+
 #### **Criterio global 5: Herencia y uso de clases abstractas e interfaces**
 - **(4.h, 4.j, 7.a, 7.b, 7.c)**: Describe sobre tu código cómo has implementado la herencia o utilizado interfaces en tu proyecto. ¿Por qué elegiste este enfoque y cómo beneficia a la estructura de tu aplicación? ¿De qué manera has utilizado los principios SOLID para mejorar el diseño de tu proyecto? ¿Mostrando tu código, contesta a qué principios has utilizado y qué beneficio has obtenido?
+
+  He usado la herencia en la creación de enemigos, eventos y objetos; usando interfaces básicas a través de las cuales he construido instancias más específicas de cada tipo, beneficiando a la estructura ya que al compartir una superclase común, son más fáciles de acceder y controlar.
 
 #### **Criterio global 6: Diseño de jerarquía de clases**
 - **(7.d, 7.e, 7.f, 7.g)**: Presenta la jerarquía de clases que diseñaste. ¿Cómo probaste y depuraste esta jerarquía para asegurar su correcto funcionamiento? ¿Qué tipo de herencia has utilizado: Especificación, Especialización, Extensión, Construcción?
 
+  He seguido mayormente Especificiación ya que me he enfocado en crear versiones diferentes de enemigos, objetos, eventos, etc. Creando así una jerarquía clara aunque algo plana.
+
 #### **Criterio global 7: Librerías de clases**
 - **(2.g, 4.k)**: Describe cualquier librería externa que hayas incorporado en tu proyecto. Explica cómo y por qué las elegiste, y cómo las incorporaste en tu proyecto. ¿Cómo extendió la funcionalidad de tu aplicación? Proporciona ejemplos específicos de su uso en tu proyecto.
+
+  No he sido capaz de implementar ninguna libreria externa a tiempo, aunque me hubiera gustado añadir Mordant para darle más color a mis dialogos de personajes y narrador.
 
 #### **Criterio global 8: Documentado**
 - **(7.h)**: Muestra ejemplos de cómo has documentado y comentado tu código. ¿Que herramientas has utilizado? ¿Cómo aseguras que tu documentación aporte valor para la comprensión, mantenimiento y depuración del código?
 
+  He documentado todas las funciones y clases de mi código, además de comentado ciertas partes del código para asegurarme de que quedase su funcionamiento lo más claro posible.
+
 #### **Criterio global 9: Genéricos**
 - **(6.f)**: Muestra ejemplos de tu código sobre cómo has implementado una clase con genéricos. ¿Qué beneficio has obtenido?
+
+  No he tenido tiempo de implementar genéricos, aunque de haberlo podido hacer, me hubiera gustado implementarlos en los objetos para no tener que usar ifs a la hora de usar el menú de objetos, y si esa opción no me resulta posible, también me hubiera gustado implementar una pila para los eventos y poder hacerles push cuando fuera necesario al usarlos.
 
