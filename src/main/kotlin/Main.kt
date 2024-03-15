@@ -1,13 +1,13 @@
 fun main() {
     val player = Player("Hero")
 
-    val enemies = listOf<Enemy>(Slime(), Goblin(), Goblin())
-
-    val battle = Battle(player, enemies)
-
-    battle.startBattle(player, enemies)
+    Adventure().adventure(player)
 }
 
+/**
+ * Función que devuelve verdadero o falso dependiendo de si cae dentro del procentaje
+ * proveido, usada durante toda la aventura.
+ */
 fun randPercentage(chance: Int): Boolean {
     val result = (1..100).random()
 
